@@ -1,0 +1,29 @@
+- name: Install apache web server
+  hosts: test
+  become: yes
+  tasks:
+  - name: install apache
+    yum:
+      name: httpd
+      state: present
+ 
+  - name: start httpd
+    service:
+     name: httpd
+     state: started
+     enabled: yes
+     
+  - name: copy index.html to web server
+    copy:
+      src: files/index.html
+      dest: /var/www/html/index.html
+      owner: apache
+      group: apache
+      mode: 0644 
+
+  - name: permit 80 port for web service
+    firewalld:
+      service: http
+      permanent: yes
+      state: enabled
+

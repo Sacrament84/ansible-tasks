@@ -1,0 +1,20 @@
+- name: Deinstall apache web server
+  hosts: test
+  become: yes
+  tasks:
+  - name: deinstall apache
+    yum:
+      name: httpd
+      state: absent
+ 
+  - name: delete index.html to web server
+    file:
+      path: /var/www/html/index.html
+      state: absent 
+
+  - name: disable 80 port
+    firewalld:
+      service: http
+      permanent: yes
+      state: disabled
+
