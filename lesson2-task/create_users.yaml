@@ -1,0 +1,28 @@
+---
+- name: create users
+  hosts: test
+  become: yes
+  vars:
+   pwhash_bob: $6$910288$viw9aaGA53rH91AZ0sjvmT5lgi30OdphpM8EhY7sL.1EcbKCixksLO1pjYiyWRTKbwReqNxDKt2Njuw12WhpY1
+   pwhash_alice: $6$910288$9Up12J6cd/6Rxws22LYDi4Zl0pWQQqACDMAS4Axwtex5w/amkp..ZNQSfoxU0Mb/IZ9BxX3iP3aLrKpsmR5BX0
+   pwhash_carol: $6$910288$r26IkmdvlDa5oj0SPIMCD.XNEX7cIkGmquzoLDREISGRnMqCyPyBlPI3zD1KkiROL3F693O9yTpa8Vgy0zzBf0
+  tasks: 
+  - name: create users 
+    user: 
+      name: "{{ item.name }}"
+      state: present
+      groups: "{{ item.groups }}"
+      comment: '{{ item.name }}@example.com'
+      create_home: yes
+      password: "{{ item.password }}"
+
+    loop:
+      - name: Alice
+        groups: users
+        password: "{{ pwhash_alice }}"
+      - name: Bob
+        groups: users
+        password: "{{ pwhash_bob }}"
+      - name: Carol
+        groups: users
+        password: "{{ pwhash_carol }}"
