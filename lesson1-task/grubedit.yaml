@@ -11,4 +11,4 @@
 
   - name: run grub2-mkconfig
     command:
-     cmd: grub2-mkconfig
+     cmd: grub2-mkconfig -o /etc/default/grub
