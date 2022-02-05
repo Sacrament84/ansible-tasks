@@ -1,23 +1,22 @@
----
-- name: add to line
-  hosts: test
-  tasks:
-  - name: add "net.ifnames=0"
-    lineinfile:
-      dest: /etc/default/grub
-      backrefs: yes
-      regexp: '^(GRUB_CMDLINE_LINUX=(?!.* net.ifnames)\"[^\"]+)(\".*)'
-      line: '\1 net.ifnames=0\2'
-      state: present
-  - name: add "biosdevname=0"
-    lineinfile:
-      dest: /etc/default/grub
-      backrefs: yes
-      regexp: '^(GRUB_CMDLINE_LINUX=(?!.* biosdevname)\"[^\"]+)(\".*)'
-      line: '\1 biosdevname=0\2'
-      state: present
+- name: edit grub config
+  hosts: test
+  become: yes
+  tasks:
+  - name: add net.ifnames=0
+    lineinfile:
+      path: /etc/default/grub
+      backrefs: yes
+      regexp: '^(GRUB_CMDLINE_LINUX=(?!.* net.ifnames)\"[^\"]+)(\".*)'
+      line: '\1 net.ifnames=0\2'
+
+  - name: add biosdevname=0
+    lineinfile:
+      path: /etc/default/grub
+      backrefs: yes
+      regexp: '^(GRUB_CMDLINE_LINUX=(?!.* biosdevname)\"[^\"]+)(\".*)'
+      line: '\1 biosdevname=0\2'
 
   - name: run grub2-mkconfig
     command:
-     cmd: grub2-mkconfig -o /etc/default/grub
+     cmd: grub2-mkconfig -o /boot/grub2/grub.cfg
 
