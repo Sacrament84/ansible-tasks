@@ -33,15 +33,8 @@
     name: ftpd_anon_write
     state: yes
     persistent: yes
-- name: config selinux for anon write
+- name: config selinux ftp full access
   seboolean:
     name: ftpd_full_access
     state: yes
     persistent: yes
-#- name: edit selinux settings
-#  sefcontext:
-#    target: /var/ftp/pub/
-#    setype: public_content_rw_t
-#    state: present
-#  notify: 
-#    - run restorecon
