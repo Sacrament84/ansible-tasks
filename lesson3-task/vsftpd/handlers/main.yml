@@ -1,0 +1,9 @@
+---
+- name: restart vsftpd
+  service:
+    name: vsftpd
+    state: restarted
+
+- name: run restorecon
+  command:
+    cmd: restorecon -vR /var/ftp/pub

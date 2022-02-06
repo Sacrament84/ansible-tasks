@@ -1,0 +1,16 @@
+---
+- name: install httpd
+  yum:
+    name: "{{ service_name }}"
+    state: present
+  notify:
+  - start httpd
+  - open 80 port
+
+- name: copy index.html to web server
+  template:
+    src: index.html
+    dest: /var/www/html/index.html
+    owner: apache
+    group: apache
+    mode: 0644
