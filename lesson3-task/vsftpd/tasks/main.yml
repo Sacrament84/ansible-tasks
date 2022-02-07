@@ -33,8 +33,10 @@
     name: ftpd_anon_write
     state: yes
     persistent: yes
-- name: config selinux ftp full access
-  seboolean:
-    name: ftpd_full_access
-    state: yes
-    persistent: yes
+- name: allow write to upload folder
+  sefcontext:
+    target: '/var/ftp/pub/upload(/.*)?'
+    setype: public_content_rw_t
+    state: present
+- name: apply file context to upload folder
+  command: restorecon -FRv /var/ftp/pub/upload
